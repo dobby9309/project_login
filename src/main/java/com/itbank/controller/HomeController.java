@@ -43,12 +43,17 @@ public class HomeController {
 	public String login(User_nonsocialDTO dto, HttpSession session)throws NoSuchAlgorithmException {
 		System.out.println(dto.getEmail());
 		System.out.println(dto.getPassword());
-		
 		User_nonsocialDTO login  = userService.login(dto);
+		if(login == null) {
+		
+			return "redirect:"+ "/relogin";
+		}
+		else {
 		session.setAttribute("login", login);
-		
-		
+	
+	
 		return "redirect:"+ "/";
+		}
 		
 	}
 	
@@ -73,6 +78,30 @@ public class HomeController {
 	@RequestMapping("/join2")
 	public String join2() {
 		return "join2";
+	}
+	
+	@GetMapping("/relogin")
+	public String relogin() {
+		return "relogin";
+	}
+
+	
+	@PostMapping("/relogin")
+	public String relogin(User_nonsocialDTO dto, HttpSession session)throws NoSuchAlgorithmException {
+		System.out.println(dto.getEmail());
+		System.out.println(dto.getPassword());
+		User_nonsocialDTO login  = userService.login(dto);
+		if(login == null) {
+		
+			return "redirect:"+ "/relogin";
+		}
+		else {
+		session.setAttribute("login", login);
+	
+	
+		return "redirect:"+ "/";
+		}
+		
 	}
 
 //	@PostMapping(value="/join2", produces="application/json; charset=utf-8")
