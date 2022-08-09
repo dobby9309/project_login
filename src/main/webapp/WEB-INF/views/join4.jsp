@@ -1016,7 +1016,7 @@ function scrollToTop(event) {
             </ul>
         </nav>
         <div class="align_rt">
-            <div class="mypage">
+            <div class="mypage">	
 
 
                 <form name="form1" action="https://www.goodchoice.kr/my/mypageInfoUpdate" autocomplete="off" method="post" novalidate="novalidate" data-form="unick">

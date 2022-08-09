@@ -3,6 +3,7 @@ package com.itbank.controller;
 
 
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 import javax.mail.MessagingException;
@@ -13,9 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itbank.service.MailService;
 import com.itbank.service.UserService;
 import com.itbank.user.User_nonsocialDTO;
 
@@ -28,6 +31,9 @@ public class HomeController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private MailService mailService;
 	
 	@RequestMapping("/")
 	public String main() {
@@ -75,10 +81,19 @@ public class HomeController {
 		return "join";
 	}
 
-	@RequestMapping("/join2")
-	public String join2() {
-		return "join2";
-	}
+	@GetMapping("/join2")
+    public String join2() {
+      return "join2";
+    }
+
+   @PostMapping(value="/join2", produces="text/plain; charset=utf-8",consumes="text/plain; charset=utf-8")
+   @ResponseBody
+   public String join2(@RequestBody String answer) throws IOException,MessagingException{
+	  
+      String isOK = mailService.sendConfirm(answer);
+      return isOK;
+   }
+
 	
 	@GetMapping("/relogin")
 	public String relogin() {

@@ -124,7 +124,7 @@
         height: 44px;
         border: none;
         border-radius: 4px;
-        background: #ccc;
+/*         background: #ccc; */
         font-size: 14px;
         font-weight: normal;
         color: #fff;
@@ -174,7 +174,10 @@
         border: initial;
     }
     .hidden {
-    	display: none;
+       display: none;
+    }
+    .gra_left_right_red {
+        background: linear-gradient(to right, rgba(255,0,85,1) 1%,rgba(230,34,67,1) 100%);
     }
     </style>
 
@@ -185,7 +188,7 @@
         </div>
     
         <p>
-            원활한 서비스 제공을 위해, 이메일 주소를 입력해주세요.
+            원활한 서비스 제공을 위해, naver이메일만 입력해주세요.
         </p>
     
         <div class="phone_confirm">
@@ -193,56 +196,97 @@
                 <strong>이메일 주소</strong>
                 <section>
                     <form id="sendMailForm" class="inp_wrap remove">
-                        <input type="tel" id="phone_number" maxlength="13">
-                    	<input type="submit" class="btn_send btn_confirm" value="인증번호 전송"> <!-- 활성화 클래스 'active' -->
+                        <input id="send_inp" type="email" name="email" required>
+<!--                        <input type="submit" class="btn_send btn_confirm" value="인증번호 전송"> 활성화 클래스 'active' -->
 <!--                         <button type="button" class="btn_checked">확인</button> -->
                     </form>
+                    <button id="sendMailForm_btn" type="submit" form="sendMailForm" class="btn_confirm">인증번호 전송</button>
                 </section>
             </div>
             <div id="verificationCode">
                 <strong>인증번호</strong>
                 <section>
                     <form id="authForm" class="inp_wrap remove hidden">
-                        <input type="tel" id="digit" minlength="4" maxlength="4">
+                        <input id="auth_inp" type="text" name="authNumber" placeholder="인증번호를 입력하세요">
                         <span class="timer">&nbsp;</span>
-	                    <input type="submit" class="btn_ok btn_confirm" data-verification-type="call" data-verification-next="joinTemplate" value="확인">
+<!--                        <input type="submit" class="btn_ok btn_confirm" data-verification-type="call" data-verification-next="joinTemplate" value="확인"> -->
                     </form>
+                    <button id="authForm_btn" type="submit" form="authForm" class="btn_confirm hidden">확인</button> 
+                    <br>
                 </section>
+                    <div>
+  						<span>제한시간 </span><span id="limited"></span>
+					</div>
             </div>
-            <input type="hidden" id="phone_certification_point" value="SIGINUP" style="display: none;">
+            <input type="hidden" id="phone_certification_point" value="SIGINUP"  style="display: none;"/>
         </div>
     </section>
   </div>
 
 <script>
-	const sendMailForm = document.getElementById('sendMailForm')
-	const authForm = document.getElementById('authForm')
-	
-	function submitHandler(event) {
-		event.preventDefault()
-		const formData = new FormData(event.target)
-		const ob = {}
-		for(let key of formData.keys()) {
-			ob[key] = formData.get(key)
-		}
-		fetch('${cpath}/join2', {
-			method: 'POST', 
-			body: JSON.stringify(ob),
-			headers: {
-				'Content-Type' : 'application/json; charset=utf-8'
-			}
-		})
-		.then(resp => resp.text())
-		.then(text => {
-			alert(text)
-			event.target.reset()
-		})
-		authForm.classList.remove('hidden')
-		authForm.querySelector('input').focus()
-		sendMailForm.querySelector('input').setAttribute('disabled', 'disabled')
-	}
-	
-	sendMailForm.addEventListener('submit', submitHandler)
+const sendMailForm = document.getElementById('sendMailForm')
+const authForm = document.getElementById('authForm')
+const authForm_btn = document.getElementById('authForm_btn')
+const sendMailForm_btn = document.getElementById('sendMailForm_btn')
+
+const send_inp = document.getElementById('send_inp')
+
+send_inp.addEventListener('keyup',(event) => {
+   sendMailForm_btn.classList.add('gra_left_right_red')
+})
+
+sendMailForm.addEventListener('submit',(event) => {
+   event.preventDefault()
+   alert('이메일로 인증을 보냅니다')
+   authForm.classList.remove('hidden')
+   authForm_btn.classList.remove('hidden')
+   authForm.querySelector('input').focus()
+   
+auth_inp.addEventListener('keyup',(event) => {
+   authForm_btn.classList.add('gra_left_right_red')
+})
+   
+   const ob = {}
+   const formData = new FormData(event.target)
+   
+   for(let key of formData.keys()){
+      ob[key] = formData.get(key)
+      console.log(ob[key])
+   }
+   
+    fetch('${cpath}/join2',{
+       method: 'POST',
+       body : ob.email,
+       headers:{
+          'Content-Type': 'text/plain;charset=utf-8'
+       }
+    })
+    .then(resp=>resp.text())
+    .then(text=>{
+       
+       sessionStorage.setItem('confirm',text)
+    })
+    sendMailForm.querySelector('input').setAttribute('disabled','disabled')
+})
+    
+authForm.addEventListener('submit',(event)=>{
+   event.preventDefault()
+   
+   const ob = {}
+   const formData = new FormData(event.target)
+   for(let key of formData.keys()){
+      ob[key] = formData.get(key)
+   }
+   console.log(ob['authNumber'])
+   console.log(sessionStorage.getItem('confirm'))
+   
+   if(ob['authNumber'] == (sessionStorage.getItem('confirm'))){
+      alert('인증되었습니다')
+      location.href = '${cpath}/join3'
+   }else{
+      alert('인증 실패')
+   }
+})
 </script>
 
 

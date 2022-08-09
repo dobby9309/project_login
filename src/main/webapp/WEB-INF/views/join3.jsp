@@ -10,8 +10,8 @@
             box-sizing: border-box;
         }
         .layer_fix.fix_disable {
-            overflow: auto;
-            position: relative;
+             overflow: auto;
+/*             position: relative; */
             touch-action: auto;
         }
         .layer_fix {
@@ -128,29 +128,12 @@
             text-align: center;
             border: none;
         }
+        .gra_left_right_red {
+           background: linear-gradient(to right, rgba(255,0,85,1) 1%,rgba(230,34,67,1) 100%);
+       }
         
     </style>
     </head>
-    
-    
-    
-    <script>
-    	function activeEvent(event) {
-			
-    		const form = document.getElementById('joinForm')
-    		const gcuseremail = document.getElementById('gcuseremail')
-    		const new_pw = document.getElementById('new_pw')
-    		const new_pw_re = document.getElementById('new_pw_re')
-    		const unick = document.getElementById('unick')
-    		const btn = document.getElementById('joinBtn')
-    		
-    		
-    		switch (!(gcuseremail && new_pw && new_pw_re && unick) {
-			case true: btn.disabled = true; break;
-			case false: btn.disabled = false; break;
-			}
-		}
-    </script>
     
     
     
@@ -164,7 +147,7 @@
             <input type="hidden" name="marketing_acceptance">
     
             <div class="fix_title">
-                <h1 class="page_head"><a href="${cpath }/join4" title="여기어때">여기어때</a></h1>
+                <h1 class="page_head"><a href="" title="여기어때">여기어때</a></h1>
             </div>
     
             <div class="join">
@@ -192,29 +175,21 @@
                     <input type="text" id="unick" name="unick" required="" class="required" placeholder="닉네임을 입력하세요." data-msg-required="닉네임을 입력하세요." data-rule-minlength="2" data-rule-maxlength="14" data-rule-spacechar="true" data-rule-specialchar="true"><label id="unick-error" class="error help-block default_label_txt icon-ic_downwards_arrow" for="unick"></label>
                 </div>
     
-                <button type="button" id="joinBtn" class="btn_link gra_left_right_red btn_user_submit" disabled style="background-color: rgb(250, 250, 250); color: rgba(0, 0, 0, 0.16); border: none;"><span>가입하기</span></button>
+                <button type="button" id="joinBtn" class="btn_link btn_user_submit"><span>가입하기</span></button> <!-- style="background-color: rgb(250, 250, 250); color: rgba(0, 0, 0, 0.16); border: none; -->
             </div>
         </form>
     </section>
     </div>
 
-	<script>
-		const form = document.getElementById('joinForm')
-		const gcuseremail = document.getElementById('gcuseremail')
-		const new_pw = document.getElementById('new_pw')
-		const new_pw_re = document.getElementById('new_pw_re')
-		const unick = document.getElementById('unick')
-		
-		
-		gcuseremail.addEventListener('keyup', activeEvent)
-			
-		new_pw.addEventListener('keyup', activeEvent)
-			
-		new_pw_re.addEventListener('keyup', activeEvent)
-			
-		unick.addEventListener('keyup', activeEvent)
-		
-	</script>
+   <script>
+      const gcuseremail = document.getElementById('gcuseremail')
+      const new_pw = document.getElementById('new_pw')
+      const new_pw_re = document.getElementById('new_pw_re')
+      const unick = document.getElementById('unick')
+      const btn = document.getElementById('joinBtn')
+      btn.disabled = true;
+      
+   </script>
 
 </body>
 </html>
